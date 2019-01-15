@@ -1,0 +1,7 @@
+<p>
+  upload-imagens works!
+</p>
+<div class="image-upload">
+    <img [src]="imageSrc" style="max-width:300px;max-height:300px"/>
+    <input name="imageUrl" type="file" accept="image/*" (change)="handleInputChange($event)" />
+</div> 
