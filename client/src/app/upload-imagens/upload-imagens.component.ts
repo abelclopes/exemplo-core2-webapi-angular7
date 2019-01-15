@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { UploadService } from './upload.service';
+import { ImagemModel } from './model/imagem.model';
+import { Builder } from 'builder-pattern';
 
 @Component({
   selector: 'app-upload-imagens',
@@ -7,14 +10,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UploadImagensComponent implements OnInit {
 
-  private imageSrc: string = '';
+  public imageSrc: string = '';
+  public response: string = '';
 
-  constructor() { }
+  constructor(
+    private uploadService: UploadService
+  ) { }
 
   ngOnInit() {
   }
 
-  public handleInputChange(e) {
+  public handleInputChange(e): void {
     var file = e.dataTransfer ? e.dataTransfer.files[0] : e.target.files[0];
     var pattern = /image-*/;
     var reader = new FileReader();
@@ -25,10 +31,24 @@ export class UploadImagensComponent implements OnInit {
     reader.onload = this._handleReaderLoaded.bind(this);
     reader.readAsDataURL(file);
   }
-  
-  public _handleReaderLoaded(e) {
+
+  public _handleReaderLoaded(e): void {
     let reader = e.target;
     this.imageSrc = reader.result;
-    console.log(this.imageSrc)
   }
+
+  public savarDados(): void {
+    let model = Builder<ImagemModel>()
+                .ImagemBase64(this.imageSrc)
+                .build();
+    console.log(model);
+    
+    this.imageSrc;
+    this.uploadService.enviarDados(model)
+      .subscribe(res => {
+        this.response = JSON.stringify(res);
+        console.log(res)
+      })
+  }
+
 }

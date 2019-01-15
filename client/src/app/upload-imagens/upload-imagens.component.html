@@ -4,4 +4,8 @@
 <div class="image-upload">
     <img [src]="imageSrc" style="max-width:300px;max-height:300px"/>
     <input name="imageUrl" type="file" accept="image/*" (change)="handleInputChange($event)" />
+    <button (click)="savarDados()">SALVAR</button>
 </div> 
+<div class="response">
+  {{response}}
+</div>
