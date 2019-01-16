@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using API.Controllers;
 using domain;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -12,12 +13,13 @@ namespace api.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class ImagensController : BaseController
-    { 
-            public ImagensController(
-                //IContext context, 
-                IMemoryCache memoryCache) : base(
-                    //context, 
-                    memoryCache){}
+    {
+        public ImagensController(
+            //IContext context, 
+            IMemoryCache memoryCache) : base(
+                //context, 
+                memoryCache)
+        { }
 
         // GET api/values
         [HttpGet]
@@ -28,10 +30,10 @@ namespace api.Controllers
 
         private List<Livro> RetornaLivros()
         {
-            
+
             return MemoryCache.GetOrCreate("livros", entry =>
             {
-                entry.AbsoluteExpiration = DateTime.UtcNow.AddDays(1);                
+                entry.AbsoluteExpiration = DateTime.UtcNow.AddDays(1);
                 List<Livro> livros = new List<Livro>();
                 for (int i = 0; i < 5; i++)
                 {
@@ -40,7 +42,7 @@ namespace api.Controllers
                 }
                 return livros;
             });
-            
+
         }
 
         // GET api/values/5
@@ -54,7 +56,6 @@ namespace api.Controllers
         [HttpPost]
         public ActionResult<Imagem> Post([FromBody] Imagem value)
         {
-            value.ImagemByte = System.Convert.FromBase64String(value.ImagemBase64);
             value.Id = Guid.NewGuid();
             return Ok(value);
         }

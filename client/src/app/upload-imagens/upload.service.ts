@@ -10,7 +10,7 @@ export class UploadService {
     constructor(private serviceRest: UploadServiceRest) { }
 
     public enviarDados(model: ImagemModel): Observable<ImagemModel> {
-        console.log("MODEL", model)
+        console.log('MODEL', model);
         return this.serviceRest.saveDatosRest(model);
     }
 
